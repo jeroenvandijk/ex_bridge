@@ -1,10 +1,9 @@
-% Add mochiweb as dependency
-Erlang.code.add_path $"deps/misultin/ebin"
-
-% Load code inside lib
-Code.unshift_path "lib"
-Code.require "ex_bridge/misultin"
-
+% This is a simple example of running Misultin with ExBridge
+% and websockets. Execute this file from ex_brige root as:
+%
+%   elixir --no-halt -pa exbin examples/misultin/websocket.exs
+%
+% And then access localhost:8080 in your browser.
 module Chat
   object Backend
     module Mixin
@@ -151,7 +150,9 @@ module Chat
   end
 end
 
+% Boot
+
+Code.prepend_path "deps/misultin/ebin"
 Chat::Backend.start
 Chat::Server.start
-
 IO.puts "Starting on http://127.0.0.1:8080/"

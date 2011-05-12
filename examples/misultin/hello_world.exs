@@ -4,16 +4,9 @@
 %
 % You can run this example from the repo root directoy:
 %
-%     elixir --no-halt examples/misultin/hello_world.ex
+%     elixir --no-halt -pa exbin examples/misultin/hello_world.exs
 %
 % And then access localhost:3000 in your browser.
-
-% Add mochiweb as dependency
-Erlang.code.add_path $"deps/misultin/ebin"
-
-% Load code inside lib
-Code.unshift_path "lib"
-Code.require "ex_bridge/misultin"
 
 module MisultinSample
   def start
@@ -33,4 +26,7 @@ module MisultinSample
   end
 end
 
+% Boot
+
+Code.prepend_path "deps/misultin/ebin"
 { 'ok, pid } = MisultinSample.start

@@ -4,16 +4,9 @@
 %
 % You can run this example from the repo root directoy:
 %
-%     elixir --no-halt examples/mochiweb/hello_world.ex
+%     elixir --no-halt -pa exbin examples/mochiweb/hello_world.exs
 %
 % And then access localhost:3000 in your browser.
-
-% Add mochiweb as dependency
-Erlang.code.add_path $"deps/mochiweb/ebin"
-
-% Load code inside lib
-Code.unshift_path "lib"
-Code.require "ex_bridge/mochiweb"
 
 module MochiwebSample
   def start
@@ -34,4 +27,7 @@ module MochiwebSample
   end
 end
 
+% Boot
+
+Code.prepend_path "deps/mochiweb/ebin"
 { 'ok, pid } = MochiwebSample.start
