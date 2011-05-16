@@ -11,16 +11,16 @@ module Chat
         { 'ok, _ } = GenServer.start_link({'local, 'chat_backend}, self.new, [])
       end
 
-      def new_user
-        GenServer.call('chat_backend, 'new_user)
+      def new_user(pid)
+        GenServer.call('chat_backend, { 'new_user, pid })
       end
 
-      def set_nick(nick)
-        GenServer.cast('chat_backend, { 'set_nick, Process.self, nick })
+      def set_nick(pid, nick)
+        GenServer.cast('chat_backend, { 'set_nick, pid, nick })
       end
 
-      def send_message(message)
-        GenServer.cast('chat_backend, { 'message, Process.self, message })
+      def send_message(pid, message)
+        GenServer.cast('chat_backend, { 'message, pid, message })
       end
     end
 
@@ -39,7 +39,7 @@ module Chat
       { 'ok, self }
     end
 
-    def handle_call('new_user, { pid, _ref })
+    def handle_call({ 'new_user, pid }, _info)
       Process.link(pid) % Link to the given socket process
       updated = self.update_ivar('users, _.set(pid, "Unknown"))
       { 'reply, 'ok, updated }
@@ -100,7 +100,7 @@ module Chat
     end
 
     def handle_websocket(socket)
-      Chat::Backend.new_user
+      Chat::Backend.new_user(Process.self)
       socket_loop(socket)
     end
 
@@ -112,9 +112,9 @@ module Chat
 
         case string.split(~r" \<\- ", 2)
         match ["msg", msg]
-          Chat::Backend.send_message(msg)
+          Chat::Backend.send_message(Process.self, msg)
         match ["nick", nick]
-          Chat::Backend.set_nick(nick)
+          Chat::Backend.set_nick(Process.self, nick)
         else
           socket.send "status <- received #{string}"
         end
