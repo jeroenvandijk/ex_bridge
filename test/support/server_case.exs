@@ -11,7 +11,7 @@ module ServerCase
         response = request.build_response
         try
           method = request.path[1, -1] + "_loop"
-          self.__send__ method.to_atom, [request, response]
+          self.send method.to_atom, [request, response]
         catch error: kind
           response.respond 500, {}, { error, kind, self.__stacktrace__ }.inspect
         end
