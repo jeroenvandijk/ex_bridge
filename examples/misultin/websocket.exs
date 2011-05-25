@@ -84,15 +84,8 @@ module Chat
 
   module Server
     def start
-      docroot = "examples/assets"
-
-      options = {
-        'port: 8080,
-        'loop: -> (req) handle_http(ExBridge.request('misultin, req, 'docroot: docroot)),
-        'ws_loop: -> (socket) handle_websocket(ExBridge.websocket('misultin, socket))
-      }
-
-      { 'ok, _ } = Erlang.misultin.start_link options.to_list
+      ExBridge::Misultin.start_link self, 'port: 8080,
+        'docroot: "examples/assets", 'websockets: true
     end
 
     def stop
@@ -133,18 +126,18 @@ module Chat
       end
     end
 
-    def handle_http(request)
-      response = request.build_response
-      status = case { request.request_method, request.path }
+    def handle_http(request, response)
+      response = case { request.request_method, request.path }
       match { 'GET, "/chat.html" }
         body = File.read File.join(response.docroot, "chat.html")
-        response.respond 200, { "Content-Type": "text/html" }, body
+        response.set 200, { "Content-Type": "text/html" }, body
       match { 'GET, path }
-        response.serve_file path[1,-1]
+        response.file path[1,-1]
       else
-        response.respond 404, {}, "Not Found"
+        response.set 404, {:}, "Not Found"
       end
 
+      status = response.dispatch!
       IO.puts "HTTP #{request.request_method} #{status} #{request.path}"
     end
   end
