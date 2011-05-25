@@ -37,10 +37,13 @@ ExBridge has two main APIs: one for the request and other for the response objec
 * `file` - Read the *filepath* currently set as response.
 * `file(filepath)` - Return the file at *filepath* on respond.
 
-* `respond` - Respond to the client using the set status, headers and body values.
-* `respond(status, headers, body)` - Respond to the client using the given *status*, *headers* and *body*. It ignores any previously set value.
+* `set(status, headers, body)` - Respond to the client using the given *status*, *headers* and *body*. It ignores any previously set value.
 
-* `serve_file(file, headers)` - Serve the given file with headers ignoring previously set values.
+All the methods above will return a new response object with the new values. In none of those cases the response is actually streamed back to the client. All the methods that send the information back to the client end with ! and should be used by framework developers and avoided in general by application developers.
+
+* `dispatch!` - Stream the response back based on the values configured previously.
+* `serve_body!(status, headers, body)` - Serve the given body with *status*, *headers* and *body*, ignoring previous values.
+* `serve_file!(file, headers)` - Serve the given file with headers ignoring previously set values.
 
 ## Running tests
 

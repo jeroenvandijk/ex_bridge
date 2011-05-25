@@ -64,38 +64,43 @@ module ExBridge::Response
     @('request: request, 'docroot: docroot, 'headers: {:}, 'cookies: {:})
   end
 
+  % api: public
   def headers
     ExBridge::Response::Headers.new(self, @headers)
   end
 
+  % api: public
   def cookies
     ExBridge::Response::Cookies.new(self, @cookies)
   end
 
-  def respond
+  % api: public
+  def dispatch!
     if @file
-      self.serve_file(@file, @headers)
+      self.serve_file!(@file, @headers)
     else
       headers = serialize_cookies(@headers, @cookies)
-      self.respond(@status || 200, headers, @body || "")
+      self.serve_body!(@status || 200, headers, @body || "")
     end
   end
 
-  def respond(given)
-    body(given).respond
+  % api: public
+  def set(status, headers, body)
+    @('status: status, 'headers: headers, 'body: body)
   end
 
+  % api: plugin
   def serve_file_conditionally(path, function)
     if @docroot
       if ~r"\.\.".match?(path)
-        self.respond(403, {:}, "Forbidden")
+        self.serve_body!(403, {:}, "Forbidden")
       else
         joined = File.join(@docroot, path)
         if File.regular?(joined)
           function.()
           200
         else
-          self.respond(404, {:}, "Not Found")
+          self.serve_body!(404, {:}, "Not Found")
         end
       end
     else
