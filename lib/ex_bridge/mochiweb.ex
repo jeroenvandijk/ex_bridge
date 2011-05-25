@@ -1,4 +1,6 @@
 module ExBridge::Mochiweb
+  mixin ExBridge::Driver
+
   def request(request, options := {:})
     ExBridge::Mochiweb::Request.new(request, options)
   end
@@ -8,39 +10,22 @@ module ExBridge::Mochiweb
   end
 
   def websocket(_)
-    self.error { 'nobridge, "No websocket support for Mochiweb" }
-  end
-
-  def start(options)
-    if options.__parent_name__ == 'OrderedDict
-      start(nil, options)
-    else
-      start(options, {:})
-    end
+    error { 'nobridge, "No websocket support for Mochiweb" }
   end
 
   def start(object, options)
-    options = options.set_new('port, 3000)
+    Erlang.mochiweb_http.start prepare_options(object, options).to_list
+  end
 
-    docroot = options['docroot]
-    options = options.delete('docroot)
-    
-    options = if value = options['http]
-      options.set('loop, value).delete('http)
-    elsif object
-      options.set 'loop, do (raw_request)
-        req = request(raw_request)
-        res = response(raw_request, 'docroot: docroot)
-        object.handle_http(req, res)
-      end
-    else
-      options
-    end
+  def start_link(_object, _options)
+    error { 'nobridge, "No start_link support for Mochiweb" }
+  end
 
+  def prepare_websockets(object, options)
     if options['websockets]
-      websocket(nil)
+      error { 'nobridge, "No websocket support for Mochiweb" }
     end
 
-    Erlang.mochiweb_http.start options.to_list
+    options
   end
 end
