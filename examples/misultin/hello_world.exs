@@ -9,24 +9,12 @@
 % And then access localhost:3000 in your browser.
 
 module MisultinSample
-  def start
-    options = {
-      'port: 3000,
-      'loop: -> (req) loop(ExBridge.request('misultin, req))
-    }
-
-    Erlang.misultin.start_link options.to_list
-  end
-
-  private
-
-  def loop(request)
-    response = request.build_response
-    response.respond 200, { "Content-Type": "text/plain" }, "Hello world\n"
+  def handle_http(_request, response)
+    response.serve_body! 200, { "Content-Type": "text/plain" }, "Hello world\n"
   end
 end
 
 % Boot
 
 Code.prepend_path "deps/misultin/ebin"
-{ 'ok, pid } = MisultinSample.start
+{ 'ok, pid } = ExBridge::Misultin.start_link MisultinSample

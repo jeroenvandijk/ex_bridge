@@ -9,25 +9,12 @@
 % And then access localhost:3000 in your browser.
 
 module MochiwebSample
-  def start
-    options = {
-      'name: 'mochiweb_sample,
-      'port: 3000,
-      'loop: -> (req) loop(ExBridge.request('mochiweb, req))
-    }
-
-    Erlang.mochiweb_http.start options.to_list
-  end
-
-  private
-
-  def loop(request)
-    response = request.build_response
-    response.respond 200, { "Content-Type": "text/plain" }, "Hello world\n"
+  def handle_http(_request, response)
+    response.serve_body! 200, { "Content-Type": "text/plain" }, "Hello world\n"
   end
 end
 
 % Boot
 
 Code.prepend_path "deps/mochiweb/ebin"
-{ 'ok, pid } = MochiwebSample.start
+{ 'ok, pid } = ExBridge::Mochiweb.start MochiwebSample, 'name: 'mochiweb_sample,'port: 3000

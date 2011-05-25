@@ -17,8 +17,4 @@ object ExBridge::Misultin::Request
       OrderedDict.from_list list
     end
   end
-
-  def build_response
-    ExBridge::Misultin::Response.new(@request, @options)
-  end
 end

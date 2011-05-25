@@ -1,6 +1,6 @@
 module ExBridge::Request
-  def initialize(request, options := {:})
-    @('request: request, 'options: options || {:})
+  def initialize(request, _options := {:})
+    @('request: request)
   end
 
   def memoize!

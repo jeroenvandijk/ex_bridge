@@ -22,7 +22,7 @@ module Runner
 
   def process ["test"|t]
     compile!
-    execute "time exunit -pa exbin test/*_test.exs test/*/*_test.exs"
+    execute "time exunit -pa exbin test/*/*_test.exs"
     process t
   end
 

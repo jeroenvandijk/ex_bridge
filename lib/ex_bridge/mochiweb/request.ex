@@ -25,8 +25,4 @@ object ExBridge::Mochiweb::Request
       OrderedDict.from_list list.map(-> ({x,y}) { x.to_bin, y.to_bin })
     end
   end
-
-  def build_response
-    ExBridge::Mochiweb::Response.new(@request, @options)
-  end
 end
