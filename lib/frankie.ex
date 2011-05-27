@@ -1,0 +1,2 @@
+module Frankie
+end

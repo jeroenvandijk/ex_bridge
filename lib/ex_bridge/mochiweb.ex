@@ -21,7 +21,7 @@ module ExBridge::Mochiweb
     error { 'nobridge, "No start_link support for Mochiweb" }
   end
 
-  def prepare_websockets(object, options)
+  def prepare_websockets(_object, options)
     if options['websockets]
       error { 'nobridge, "No websocket support for Mochiweb" }
     end

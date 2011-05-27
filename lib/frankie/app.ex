@@ -1,0 +1,3 @@
+module Frankie::App
+  
+end
