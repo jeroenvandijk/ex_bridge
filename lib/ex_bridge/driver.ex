@@ -3,7 +3,7 @@ module ExBridge::Driver
     if options.__parent_name__ == 'OrderedDict
       self.start_link(nil, options)
     else
-      self.start_link(options, {:})
+      self.start_link(options, {})
     end
   end
 
@@ -11,7 +11,7 @@ module ExBridge::Driver
     if options.__parent_name__ == 'OrderedDict
       self.start(nil, options)
     else
-      self.start(options, {:})
+      self.start(options, {})
     end
   end
   

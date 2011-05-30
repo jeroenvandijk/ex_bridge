@@ -1,11 +1,11 @@
 module ExBridge::Misultin
   mixin ExBridge::Driver
 
-  def request(request, options := {:})
+  def request(request, options := {})
     ExBridge::Misultin::Request.new(request, options)
   end
 
-  def response(request, options := {:})
+  def response(request, options := {})
     ExBridge::Misultin::Response.new(request, options)
   end
 

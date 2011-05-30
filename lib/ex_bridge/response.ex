@@ -14,7 +14,7 @@ module ExBridge::Response
     end
 
     def clear
-      @response.headers({:})
+      @response.headers({})
     end
 
     def delete(key)
@@ -36,11 +36,11 @@ module ExBridge::Response
       @cookies[key]
     end
 
-    def set(key, value, options := {:})
+    def set(key, value, options := {})
       @response.cookies @cookies.set(key, options.set('value, value))
     end
 
-    def delete(key, options := {:})
+    def delete(key, options := {})
       set(key, "deleted", options.merge('expires: unix_1970))
     end
 
@@ -61,7 +61,7 @@ module ExBridge::Response
 
   def initialize(request, options)
     docroot = options['docroot]
-    @('request: request, 'docroot: docroot, 'headers: {:}, 'cookies: {:})
+    @('request: request, 'docroot: docroot, 'headers: {}, 'cookies: {})
   end
 
   % api: public
@@ -93,14 +93,14 @@ module ExBridge::Response
   def serve_file_conditionally(path, function)
     if @docroot
       if ~r"\.\.".match?(path)
-        self.serve_body!(403, {:}, "Forbidden")
+        self.serve_body!(403, {}, "Forbidden")
       else
         joined = File.join(@docroot, path)
         if File.regular?(joined)
           function.()
           200
         else
-          self.serve_body!(404, {:}, "Not Found")
+          self.serve_body!(404, {}, "Not Found")
         end
       end
     else
@@ -110,7 +110,7 @@ module ExBridge::Response
 
   private
 
-  def serialize_cookies(headers, {:})
+  def serialize_cookies(headers, {})
     headers
   end
 

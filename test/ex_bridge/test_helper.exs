@@ -3,7 +3,7 @@ Code.require_file "../support/http_server", __FILE__
 Code.require_file "../support/server_case", __FILE__
 
 % Configure ExUnit, check its documentation for more info.
-ExUnit.configure {:}
+ExUnit.configure {}
 
 % ASSERTION FLAG
 % Flag above used in tests

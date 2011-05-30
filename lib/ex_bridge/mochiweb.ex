@@ -1,11 +1,11 @@
 module ExBridge::Mochiweb
   mixin ExBridge::Driver
 
-  def request(request, options := {:})
+  def request(request, options := {})
     ExBridge::Mochiweb::Request.new(request, options)
   end
 
-  def response(request, options := {:})
+  def response(request, options := {})
     ExBridge::Mochiweb::Response.new(request, options)
   end
 

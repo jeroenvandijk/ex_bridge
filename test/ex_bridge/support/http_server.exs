@@ -16,7 +16,7 @@ module HTTPServer
     { "Content-Type": "text/plain" } = response.headers.to_dict
     "text/plain" = response.headers["Content-Type"]
     another_response = response.headers.clear
-    {:} = another_response.headers.to_dict
+    {} = another_response.headers.to_dict
 
     response = response.body("Hello world\n")
     "Hello world\n" = response.body

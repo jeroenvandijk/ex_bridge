@@ -25,7 +25,7 @@ module Chat
     end
 
     def initialize()
-      @('users: {:})
+      @('users: {})
     end
 
     def broadcast(message)
@@ -134,7 +134,7 @@ module Chat
       match { 'GET, path }
         response.file path[1,-1]
       else
-        response.set 404, {:}, "Not Found"
+        response.set 404, {}, "Not Found"
       end
 
       status = response.dispatch!

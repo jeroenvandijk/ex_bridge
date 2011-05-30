@@ -1,5 +1,5 @@
 module ExBridge::Request
-  def initialize(request, _options := {:})
+  def initialize(request, _options := {})
     @('request: request)
   end
 
@@ -27,7 +27,7 @@ module ExBridge::Request
         end
         OrderedDict.from_list list.flatten
       else
-        {:}
+        {}
       end
     end
   end
