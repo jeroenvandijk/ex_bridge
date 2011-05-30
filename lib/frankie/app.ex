@@ -9,13 +9,13 @@ module Frankie::App
   % object.
   object Wrapper
     def initialize(app)
-      @('app, app)
+      @('routes: app.routes, 'app: app.new)
     end
 
     def handle_http(request, response)
       verb   = request.request_method
       path   = request.path
-      route  = find_route(@app.routes, verb, path, request)
+      route  = find_route(@routes, verb, path, request)
       result = route.call(@app, request, response)
 
       if result.__parent_name__ == 'String
@@ -70,7 +70,7 @@ module Frankie::App
         []
       end
 
-      @method.bind(app.new).apply(args)
+      @method.bind(app).apply(args)
     end
   end
 
