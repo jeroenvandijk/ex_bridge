@@ -70,7 +70,7 @@ module Frankie::App
         []
       end
 
-      @method.bind(app).apply(args)
+      @method.apply_to(app, args)
     end
   end
 
