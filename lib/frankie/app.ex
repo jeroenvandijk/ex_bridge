@@ -13,7 +13,9 @@ module Frankie::App
     end
 
     def handle_http(request, response)
-      route  = find_route(@app.routes, request)
+      verb   = request.request_method
+      path   = request.path
+      route  = find_route(@app.routes, verb, path, request)
       result = route.call(@app, request, response)
 
       if result.__parent_name__ == 'String
@@ -25,15 +27,22 @@ module Frankie::App
 
     private
 
-    def find_route([h|t], request)
-      if h.match?(request)
+    def find_route([h|t], verb, path, request)
+      result =
+        if h.__parent_name__ == 'Frankie::App::Route
+          h.match?(verb, path) % Optimize the most common case.
+        else
+          h.match?(request)
+        end
+
+      if result
         h
       else
-        find_route(t, request)
+        find_route(t, verb, path, request)
       end
     end
 
-    def find_route([], _)
+    def find_route([], _, _, _)
       Frankie::App::ErrorRoute.new(404)
     end
   end
@@ -47,8 +56,8 @@ module Frankie::App
       @('verb: verb, 'path: path, 'method: method)
     end
 
-    def match?(request)
-      @verb == request.request_method andalso @path == request.path
+    def match?(verb, path)
+      @verb == verb andalso @path == path
     end
 
     def call(app, request, response)
