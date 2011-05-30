@@ -4,6 +4,12 @@ The goal of this project is to provide an [Elixir](https://github.com/josevalim/
 
 This repository also holds *Frankie*, a [Sinatra](https://github.com/sinatra/sinatra) like web framework for Elixir. It is being developed with ExBridge for convenience but will be split into different repositories when both projects become more stable.
 
+## Examples
+
+There are many examples in the examples directory. To run them, as Elixir was not released yet, you need to check out [Elixir's repository](https://github.com/josevalim/elixir) and put its `bin/` directory in your path. After that, you need to get all the dependencies by running the following inside this repo:
+
+    elixir runner.ex setup
+
 ## ExBridge API
 
 ExBridge has two main APIs: one for the request and other for the response object (and a websocket API is still in development). The request API is mainly for reading request information while the response contains information about the response to be returned to the client.
@@ -71,14 +77,14 @@ Frankie allows you to easily build simple web applications. Here is an example:
     
     MyApp.run 'mochiweb
 
-Ready to run examples are available in the examples folder.
+Ready to run examples are available at `examples/mochiweb/frankie.exs`.
 
 ## Running tests
 
-As Elixir was not released yet, you need to check it out and put its `bin/` directory in your path. After that, you need to get all the dependencies running the following inside this repo:
-
-    elixir runner.ex setup
-
-Next, you can run tests as:
+You can run tests with:
 
     elixir runner.ex
+    
+## License
+
+This project uses MIT-LICENSE.
