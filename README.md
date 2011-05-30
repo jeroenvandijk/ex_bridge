@@ -2,7 +2,7 @@
 
 The goal of this project is to provide an [Elixir](https://github.com/josevalim/elixir) bridge that can interact with different Erlang webservers. It is heavily influenced by [SimpleBridge](https://github.com/nitrogen/simple_bridge).
 
-This repository also holds *Frankie*, a Sinatra like web framework for Elixir. It is being developed with ExBridge for convenience but will be split into different repositories when both projects become more stable.
+This repository also holds *Frankie*, a [Sinatra](https://github.com/sinatra/sinatra) like web framework for Elixir. It is being developed with ExBridge for convenience but will be split into different repositories when both projects become more stable.
 
 ## ExBridge API
 
@@ -49,7 +49,29 @@ All the methods above will return a new response object with the new values. In 
 
 ## Frankie
 
-WIP
+Frankie allows you to easily build simple web applications. Here is an example:
+
+    object MyApp
+      proto Frankie::App
+    
+      get "/version", def
+        "1.2.3"
+      end
+      
+      get "/set_cookie", def (request, response)
+        response = response.cookies.set("hello", "world")
+        response = response.body("Cookie set")
+        response
+      end
+      
+      get "/read_cookie", def (request, response)
+        "#{request.cookies["hello"]}"
+      end
+    end
+    
+    MyApp.run 'mochiweb
+
+Ready to run examples are available in the examples folder.
 
 ## Running tests
 
