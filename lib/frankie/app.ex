@@ -29,11 +29,11 @@ module Frankie::App
       if h.match?(request)
         h
       else
-        handle_http(t)
+        find_route(t, request)
       end
     end
 
-    def find_route([], _, _)
+    def find_route([], _)
       Frankie::App::ErrorRoute.new(404)
     end
   end
@@ -41,14 +41,14 @@ module Frankie::App
   % Main route object that asserts for the verb,
   % route and dispatches the stored method/callback.
   object Route
-    attr_reader ['verb, 'route, 'method]
+    attr_reader ['verb, 'path, 'method]
 
-    def initialize(verb, route, method)
-      @('verb: verb, 'route: route, 'method: method)
+    def initialize(verb, path, method)
+      @('verb: verb, 'path: path, 'method: method)
     end
 
     def match?(request)
-      @method == request.request_method && @path == request.path
+      @verb == request.request_method andalso @path == request.path
     end
 
     def call(app, request, response)
@@ -57,7 +57,7 @@ module Frankie::App
         [request, response]
       match 1
         [response]
-      match 
+      else
         []
       end
 
@@ -76,12 +76,14 @@ module Frankie::App
       true
     end
 
-    def call(app, request, response)
-      response.set(@status, {}, "Error")
+    def call(_app, _request, response)
+      response.set(@status, {}, "Status: #{@status}")
     end
   end
 
   module MixinMethods
+    attr_reader ['routes]
+
     def __added_as_mixin__(base)
       base.set_ivar('routes, [])
     end
@@ -91,7 +93,7 @@ module Frankie::App
     % request object and to `call` which receives the application
     % (not instanciated yet), request and response objects.
     def bare_route(route_object)
-      update_ivar('routes, _.push(route_object))
+      update_ivar 'routes, _.push(route_object)
     end
 
     % Add a new route with a verb, path and the callback.

@@ -5,7 +5,7 @@ object AppTest
 
   def basic_string_test
     response = request('get, "/version")
-    {_,_,"1.2.3"} = response.body
+    {_,_,"1.2.3"} = response
   end
 
   private
