@@ -1,8 +1,8 @@
 Code.require_file "../test_helper", __FILE__
 
-object Misultin::ServerTest
-  proto ExUnit::Case
-  proto ServerCase
+module Misultin::ServerTest
+  mixin ExUnit::Case
+  mixin ServerCase
 
   def port
     3002

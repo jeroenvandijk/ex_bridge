@@ -5,8 +5,8 @@
 % And then access localhost:3000/hello_world in your browser.
 Code.prepend_path "deps/mochiweb/ebin"
 
-object MyApp
-  proto Frankie::App
+module MyApp
+  mixin Frankie::App
 
   get "/hello_world", def
     "Hello World"

@@ -1,7 +1,7 @@
 Code.require_file "../test_helper", __FILE__
 
-object AppTest
-  proto ExUnit::Case
+module AppTest
+  mixin ExUnit::Case
 
   def basic_string_test
     response = request('get, "/version")

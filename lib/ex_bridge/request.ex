@@ -1,5 +1,5 @@
 module ExBridge::Request
-  def initialize(request, _options := {})
+  def __bound__(request, _options := {})
     @('request: request)
   end
 

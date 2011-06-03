@@ -1,5 +1,5 @@
-object ExBridge::Misultin::Request
-  proto ExBridge::Request
+module ExBridge::Misultin::Request
+  mixin ExBridge::Request
 
   def request_method
     Erlang.apply(@request, 'get, ['method])

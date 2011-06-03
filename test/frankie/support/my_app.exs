@@ -1,7 +1,7 @@
 Code.prepend_path "deps/mochiweb/ebin"
 
-object MyApp
-  proto Frankie::App
+module MyApp
+  mixin Frankie::App
 
   get "/version", def
     "1.2.3"

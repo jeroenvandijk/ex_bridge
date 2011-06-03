@@ -1,7 +1,7 @@
 module ExBridge::Response
   % TODO: Maybe an ordered dict is not the best/fastest way to represent the headers
-  object Headers
-    def initialize(response, headers)
+  module Headers
+    def __bound__(response, headers)
       @('response: response, 'headers: headers)
     end
 
@@ -27,8 +27,8 @@ module ExBridge::Response
   end
 
   % TODO: Maybe an ordered dict is not the best/fastest way to represent cookies
-  object Cookies
-    def initialize(response, cookies)
+  module Cookies
+    def __bound__(response, cookies)
       @('response: response, 'cookies: cookies)
     end
 
@@ -59,19 +59,19 @@ module ExBridge::Response
   attr_writer   ['headers, 'cookies]
   attr_accessor ['status, 'body, 'file]
 
-  def initialize(request, options)
+  def __bound__(request, options)
     docroot = options['docroot]
     @('request: request, 'docroot: docroot, 'headers: {}, 'cookies: {})
   end
 
   % api: public
   def headers
-    ExBridge::Response::Headers.new(self, @headers)
+    #ExBridge::Response::Headers(self, @headers)
   end
 
   % api: public
   def cookies
-    ExBridge::Response::Cookies.new(self, @cookies)
+    #ExBridge::Response::Cookies(self, @cookies)
   end
 
   % api: public

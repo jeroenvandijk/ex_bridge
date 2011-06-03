@@ -2,15 +2,15 @@ module ExBridge::Misultin
   mixin ExBridge::Driver
 
   def request(request, options := {})
-    ExBridge::Misultin::Request.new(request, options)
+    #ExBridge::Misultin::Request(request, options)
   end
 
   def response(request, options := {})
-    ExBridge::Misultin::Response.new(request, options)
+    #ExBridge::Misultin::Response(request, options)
   end
 
   def websocket(socket)
-    ExBridge::Misultin::Websocket.new(socket)
+    #ExBridge::Misultin::Websocket(socket)
   end
 
   def start(_object, _options)

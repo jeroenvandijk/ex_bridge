@@ -14,11 +14,11 @@ module HTTPClient
   end
 
   def encode_headers(headers)
-    HTTPClient::PropList.new headers.map -> ({k,v}) { k.to_bin, v.to_bin }
+    #HTTPClient::PropList(headers.map -> ({k,v}) { k.to_bin, v.to_bin })
   end
 
-  object PropList
-    def initialize(list)
+  module PropList
+    def __bound__(list)
       @('list: Erlang.lists.sort(list))
     end
 

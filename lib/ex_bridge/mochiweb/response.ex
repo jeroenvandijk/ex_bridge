@@ -1,5 +1,5 @@
-object ExBridge::Mochiweb::Response
-  proto ExBridge::Response
+module ExBridge::Mochiweb::Response
+  mixin ExBridge::Response
 
   % api: private
   def serve_body!(status, headers, body)

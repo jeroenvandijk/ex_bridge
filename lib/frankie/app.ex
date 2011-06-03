@@ -7,9 +7,9 @@ module Frankie::App
   % we eventually call the error route with 404 status code. The wrapper is
   % responsible to manage the result given and finally dispatch the response
   % object.
-  object Wrapper
-    def initialize(app)
-      @('routes: app.routes, 'app: app.new)
+  module Wrapper
+    def __bound__(app)
+      @('routes: app.routes, 'app: #app())
     end
 
     def handle_http(request, response)
@@ -29,11 +29,11 @@ module Frankie::App
 
     def find_route([h|t], verb, path, request)
       result =
-        if h.__parent_name__ == 'Frankie::App::Route
+        % if h.__parent_name__ == 'Frankie::App::Route
           h.match?(verb, path) % Optimize the most common case.
-        else
-          h.match?(request)
-        end
+        % else
+        %   h.match?(request)
+        % end
 
       if result
         h
@@ -43,16 +43,16 @@ module Frankie::App
     end
 
     def find_route([], _, _, _)
-      Frankie::App::ErrorRoute.new(404)
+      #Frankie::App::ErrorRoute(404)
     end
   end
 
   % Main route object that asserts for the verb,
   % route and dispatches the stored method/callback.
-  object Route
+  module Route
     attr_reader ['verb, 'path, 'method]
 
-    def initialize(verb, path, method)
+    def __bound__(verb, path, method)
       @('verb: verb, 'path: path, 'method: method)
     end
 
@@ -76,12 +76,13 @@ module Frankie::App
 
   % Route that handle errors.
   % TODO Make this invoke a hook in the app.
-  object ErrorRoute
-    def initialize(status)
+  % TODO Make this receive the request object
+  module ErrorRoute
+    def __bound__(status)
       @('status, status)
     end
 
-    def match?(_)
+    def match?(_,_)
       true
     end
 
@@ -90,57 +91,51 @@ module Frankie::App
     end
   end
 
-  module MixinMethods
-    attr_reader ['routes]
+  attr_reader ['routes]
 
-    def __added_as_mixin__(base)
-      base.set_ivar('routes, [])
-    end
-
-    % Adds a new route to the route set. The route object
-    % only needs to respond to a `match?` which receives the
-    % request object and to `call` which receives the application
-    % (not instanciated yet), request and response objects.
-    def bare_route(route_object)
-      update_ivar 'routes, _.push(route_object)
-    end
-
-    % Add a new route with a verb, path and the callback.
-    def route(verb, path, method)
-      bare_route Frankie::App::Route.new(verb, path, method)
-    end
-
-    def get(route, method)
-      route 'GET, route, method
-    end
-
-    def post(route, method)
-      route 'POST, route, method
-    end
-
-    def put(route, method)
-      route 'PUT, route, method
-    end
-
-    def patch(route, method)
-      route 'PATCH, route, method
-    end
-
-    def delete(route, method)
-      route 'DELETE, route, method
-    end
-
-    % Start MyApp using the given *server* and *options*. Valid options are
-    % 'port (defaults to 3000) and the process 'name (defaults to
-    % Frankie-#{APP_NAME}).
-    def run(server, options := {})
-      options = options.set_new 'name, "Frankie-#{self.__name__}".to_atom
-      wrapper = Frankie::App::Wrapper.new(self)
-      ExBridge.start server, wrapper, options
-    end
+  def __added_as_mixin__(base)
+    base.set_ivar('routes, [])
   end
 
-  def __added_as_proto__(base)
-    base.mixin(Frankie::App::MixinMethods)
+  % Adds a new route to the route set. The route object
+  % only needs to respond to a `match?` which receives the
+  % request object and to `call` which receives the application
+  % (not instanciated yet), request and response objects.
+  def bare_route(route_object)
+    update_ivar 'routes, _.push(route_object)
+  end
+
+  % Add a new route with a verb, path and the callback.
+  def route(verb, path, method)
+    bare_route(#Frankie::App::Route(verb, path, method))
+  end
+
+  def get(route, method)
+    route 'GET, route, method
+  end
+
+  def post(route, method)
+    route 'POST, route, method
+  end
+
+  def put(route, method)
+    route 'PUT, route, method
+  end
+
+  def patch(route, method)
+    route 'PATCH, route, method
+  end
+
+  def delete(route, method)
+    route 'DELETE, route, method
+  end
+
+  % Start MyApp using the given *server* and *options*. Valid options are
+  % 'port (defaults to 3000) and the process 'name (defaults to
+  % Frankie-#{APP_NAME}).
+  def run(server, options := {})
+    options = options.set_new 'name, "Frankie-#{self.__name__}".to_atom
+    wrapper = #Frankie::App::Wrapper(self)
+    ExBridge.start server, wrapper, options
   end
 end

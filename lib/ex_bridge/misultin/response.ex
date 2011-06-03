@@ -1,5 +1,5 @@
-object ExBridge::Misultin::Response
-  proto ExBridge::Response
+module ExBridge::Misultin::Response
+  mixin ExBridge::Response
 
   def serve_body!(status, headers, body)
     response = [ status, convert_headers(headers), body.to_bin ]
