@@ -146,7 +146,7 @@ module ExBridge::Response
 
   def serialize_expires(expires)
     % TODO Duck type when we have respond_to?
-    if expires.__parent_name__ == 'Time
+    if expires.__module_name__ == 'Time::Behavior
       expires.rfc1123
     else
       expires

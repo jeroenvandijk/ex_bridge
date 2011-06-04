@@ -18,7 +18,7 @@ module Frankie::App
       route  = find_route(@routes, verb, path, request)
       result = route.call(@app, request, response)
 
-      if result.__parent_name__ == 'String
+      if result.__module_name__ == 'String::Behavior
         result = response.body(result)
       end
 
@@ -29,11 +29,11 @@ module Frankie::App
 
     def find_route([h|t], verb, path, request)
       result =
-        % if h.__parent_name__ == 'Frankie::App::Route
+        if h.__module_name__ == 'Frankie::App::Route
           h.match?(verb, path) % Optimize the most common case.
-        % else
-        %   h.match?(request)
-        % end
+        else
+          h.match?(request)
+        end
 
       if result
         h
@@ -134,7 +134,7 @@ module Frankie::App
   % 'port (defaults to 3000) and the process 'name (defaults to
   % Frankie-#{APP_NAME}).
   def run(server, options := {})
-    options = options.set_new 'name, "Frankie-#{self.__name__}".to_atom
+    options = options.set_new 'name, "Frankie-#{self.__module_name__}".to_atom
     wrapper = #Frankie::App::Wrapper(self)
     ExBridge.start server, wrapper, options
   end

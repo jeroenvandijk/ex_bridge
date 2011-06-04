@@ -35,7 +35,7 @@ module ExBridge::Request
   % Helpers
 
   def upcase_headers(object)
-    if object.__parent_name__ == 'Atom
+    if object.__module_name__ == 'Atom::Behavior
       object.to_s
     else
       upcase_headers(object.to_char_list, [])

@@ -1,6 +1,6 @@
 module ExBridge::Driver
   def start_link(options)
-    if options.__parent_name__ == 'OrderedDict
+    if options.__module_name__ == 'OrderedDict::Behavior
       self.start_link(nil, options)
     else
       self.start_link(options, {})
@@ -8,7 +8,7 @@ module ExBridge::Driver
   end
 
   def start(options)
-    if options.__parent_name__ == 'OrderedDict
+    if options.__module_name__ == 'OrderedDict::Behavior
       self.start(nil, options)
     else
       self.start(options, {})
