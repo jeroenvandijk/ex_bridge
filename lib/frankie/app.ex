@@ -14,7 +14,7 @@ module Frankie::App
 
     def handle_http(request, response)
       verb   = request.request_method
-      path   = request.path
+      path   = request.path_chars
       route  = find_route(@routes, verb, path, request)
       result = route.call(@app, request, response)
 
@@ -53,7 +53,7 @@ module Frankie::App
     attr_reader ['verb, 'path, 'method]
 
     def __bound__(verb, path, method)
-      @('verb: verb, 'path: path, 'method: method)
+      @('verb: verb, 'path: path.to_list, 'method: method)
     end
 
     def match?(verb, path)

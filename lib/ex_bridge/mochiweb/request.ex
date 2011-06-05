@@ -6,9 +6,13 @@ module ExBridge::Mochiweb::Request
   end
 
   def path
+    path_chars.to_bin
+  end
+
+  def path_chars
     raw_path = Erlang.apply(@request, 'get, ['raw_path])
     {path, _, _} = Erlang.mochiweb_util.urlsplit_path(raw_path)
-    path.to_bin
+    path
   end
 
   def headers

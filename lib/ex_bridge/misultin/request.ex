@@ -6,8 +6,12 @@ module ExBridge::Misultin::Request
   end
 
   def path
+    path_chars.to_bin
+  end
+
+  def path_chars
     { 'abs_path, path } = Erlang.apply(@request, 'get, ['uri])
-    path.to_bin
+    path
   end
 
   def headers
