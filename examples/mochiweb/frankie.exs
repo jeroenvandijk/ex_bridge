@@ -13,4 +13,4 @@ module MyApp
   end
 end
 
-MyApp.run 'mochiweb
+Frankie.run 'mochiweb, MyApp
