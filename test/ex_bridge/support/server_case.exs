@@ -10,7 +10,7 @@ module ServerCase
   def dispatch_file_test
     response = HTTPClient.request('get, "http://127.0.0.1:#{self.port}/dispatch_file")
     { 200, _headers, body } = response
-    self.assert_include "% ASSERTION FLAG", body
+    self.assert_included "% ASSERTION FLAG", body
   end
 
   def set_test
@@ -22,7 +22,7 @@ module ServerCase
   def serve_file_test
     response = HTTPClient.request('get, "http://127.0.0.1:#{self.port}/serve_file")
     { 200, _headers, body } = response
-    self.assert_include "% ASSERTION FLAG", body
+    self.assert_included "% ASSERTION FLAG", body
   end
 
   def serve_file_with_headers_test
