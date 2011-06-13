@@ -53,7 +53,7 @@ module Frankie::App
     attr_reader ['verb, 'path, 'method]
 
     def __bound__(verb, path, method)
-      @('verb: verb, 'path: path.to_list, 'method: method)
+      @('verb: verb, 'path: path.to_char_list, 'method: method)
     end
 
     def match?(verb, path)
