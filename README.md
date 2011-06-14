@@ -57,8 +57,8 @@ All the methods above will return a new response object with the new values. In 
 
 Frankie allows you to easily build simple web applications. Here is an example:
 
-    object MyApp
-      proto Frankie::App
+    module MyApp
+      mixin Frankie::App
     
       get "/version", def
         "1.2.3"
@@ -75,7 +75,7 @@ Frankie allows you to easily build simple web applications. Here is an example:
       end
     end
     
-    MyApp.run 'mochiweb
+    Frankie.run 'mochiweb, MyApp
 
 Ready to run examples are available at `examples/mochiweb/frankie.exs`.
 
