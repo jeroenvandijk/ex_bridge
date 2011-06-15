@@ -8,7 +8,7 @@ This repository also holds *Frankie*, a [Sinatra](https://github.com/sinatra/sin
 
 There are many examples in the examples directory. To run them, as Elixir was not released yet, you need to check out [Elixir's repository](https://github.com/josevalim/elixir) and put its `bin/` directory in your path. After that, you need to get all the dependencies by running the following inside this repo:
 
-    elixir runner.ex setup
+    elixir runner.exs setup
 
 ## ExBridge API
 
@@ -83,7 +83,7 @@ Ready to run examples are available at `examples/mochiweb/frankie.exs`.
 
 You can run tests with:
 
-    elixir runner.ex
+    elixir runner.exs
     
 ## License
 
