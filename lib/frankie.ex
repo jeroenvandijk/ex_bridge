@@ -4,7 +4,7 @@ module Frankie
   % Frankie-#{APP_NAME}).
   def run(server, app, options := {})
     options = options.set_new 'name, "Frankie-#{self.__module_name__}".to_atom
-    wrapper = #Frankie::App::Wrapper(app)
+    wrapper = #Frankie::Routes::Wrapper(app)
     ExBridge.start server, wrapper, options
   end
 end
