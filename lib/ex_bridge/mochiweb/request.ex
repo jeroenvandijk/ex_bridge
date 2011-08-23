@@ -15,6 +15,20 @@ module ExBridge::Mochiweb::Request
     path
   end
 
+  def query_params
+    @query_params || begin
+      list = Erlang.apply(@request, 'parse_qs, [])
+      OrderedDict.from_list list.map(-> ({x,y}) { x.to_bin, y.to_bin })
+    end
+  end
+
+  def post_params
+    @post_params || begin
+      list = Erlang.apply(@request, 'parse_post, [])
+      OrderedDict.from_list list.map(-> ({x,y}) { x.to_bin, y.to_bin })
+    end
+  end
+
   def headers
     @headers || begin
       list = Erlang.mochiweb_headers.to_list(Erlang.apply(@request, 'get, ['headers]))
@@ -30,3 +44,4 @@ module ExBridge::Mochiweb::Request
     end
   end
 end
+
