@@ -39,6 +39,9 @@ ExBridge has two main APIs: one for the request and other for the response objec
 
     Cookie options can be *domain* (string), *path* (string), *expires* (datetime or string), *secure* (boolean) and *httponly* (boolean). All cookies are *httponly* by default.
 
+* `query_params` - Returns the request's query parameters as a Dict.
+* `post_params` - Returns the request's post parameters as a Dict.
+
 * `body` - Read the currently set body.
 * `body(body)` - Replaces the current body by the one given.
 
@@ -72,6 +75,10 @@ Frankie allows you to easily build simple web applications. Here is an example:
       
       get "/read_cookie", def (request, response)
         "#{request.cookies["hello"]}"
+      end
+      
+      get "/get_value_param", def (request, response)
+        "Query parameter \"value\" is: #{request.query_params["value"]}"
       end
     end
     
