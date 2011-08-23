@@ -4,7 +4,7 @@ module ExBridge::Request
   end
 
   def memoize!
-    memoize!('headers).memoize!('cookies)
+    memoize!('headers).memoize!('cookies).memoize!('query_params).memoize!('post_params)
   end
 
   def memoize!('headers)
@@ -13,6 +13,14 @@ module ExBridge::Request
 
   def memoize!('cookies)
     @('cookies: self.cookies)
+  end
+
+  def memoize!('query_params)
+    @('query_params: self.query_params)
+  end
+
+  def memoize!('post_params)
+    @('post_params: self.post_params)
   end
 
   def cookies
