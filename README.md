@@ -67,18 +67,24 @@ Frankie allows you to easily build simple web applications. Here is an example:
         "1.2.3"
       end
       
-      get "/set_cookie", def (request, response)
+      get "/set_cookie", def
         response = response.cookies.set("hello", "world")
         response = response.body("Cookie set")
         response
       end
       
-      get "/read_cookie", def (request, response)
+      get "/read_cookie", def
         "#{request.cookies["hello"]}"
       end
       
-      get "/get_value_param", def (request, response)
+      get "/get_value_param", def
         "Query parameter \"value\" is: #{request.query_params["value"]}"
+      end
+
+      get "/multiply/'arg1/'arg2", def
+        arg1 = params['arg1].to_i
+        arg2 = params['arg2].to_i
+        "#{arg1} * #{arg2} = #{arg1 * arg2}"
       end
     end
     
