@@ -14,8 +14,14 @@ module Frankie::Routes
     def handle_http(request, response)
       verb   = request.request_method
       path   = request.path_chars
-      route  = find_route(@routes, verb, path, request)
-      result = route.call(#(@app)(request, response))
+      {route, params} = find_route(@routes, verb, path, request)
+      result = 
+        if route.respond_to?('call, 3)
+          route.call(#(@app)(request, response, params), request, response)
+        else
+          route.call(#(@app)(request, response, params))
+        end
+
 
       if result.__module_name__ == 'String::Behavior
         result = response.body(result)
@@ -28,21 +34,21 @@ module Frankie::Routes
 
     def find_route([h|t], verb, path, request)
       result =
-        if h.respond_to?('match?, 2)
-          h.match?(verb, path) % Optimize the most common case.
+        if h.respond_to?('match_route, 2)
+          h.match_route(verb, path) % Optimize the most common case.
         else
-          h.match?(request)
+          h.match_route(request)
         end
 
       if result
-        h
+        {h, result}
       else
         find_route(t, verb, path, request)
       end
     end
 
     def find_route([], _, _, _)
-      #Frankie::Routes::ErrorRoute(404)
+      {#Frankie::Routes::ErrorRoute(404), {}}
     end
   end
   
@@ -52,24 +58,32 @@ module Frankie::Routes
     attr_reader ['verb, 'path, 'method]
 
     def __bound__(verb, path, method)
-      @('verb: verb, 'path: path.to_char_list, 'method: method)
+      @('verb: verb, 'path: path.split(~r"/"), 'method: method)
     end
 
-    def match?(verb, path)
-      @verb == verb andalso @path == path
+    def match_route(verb, path)
+      @verb == verb && match_route(@path, path.to_bin.split(~r"/"), {})
     end
 
-    def call(app, request, response)
-      args = case @method.arity
-      match 2
-        [request, response]
-      match 1
-        [response]
-      else
-        []
-      end
+    def match_route([], [], matched)
+      matched
+    end
 
-      @method.apply_to(app, args)
+    def match_route([<<$', key|binary>> | t1], [value|t2], matched)
+      key = key.to_atom
+      match_route(t1, t2, matched.set(key, value))
+    end
+      
+    def match_route([h|t1], [h|t2], matched)
+      match_route(t1, t2, matched)
+    end
+
+    def match_route(_, _, _)
+      false
+    end
+
+    def call(app)
+      @method.apply_to(app, [])
     end
   end
 
@@ -80,8 +94,8 @@ module Frankie::Routes
       @('status, status)
     end
 
-    def match?(_)
-      true
+    def match_route(_)
+      {}
     end
 
     def call(_app, _request, response)
@@ -89,3 +103,4 @@ module Frankie::Routes
     end
   end
 end
+

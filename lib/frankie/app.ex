@@ -34,15 +34,15 @@ module Frankie::App
     end
   end
 
-  attr_reader ['routes]
+  attr_reader ['routes, 'request, 'response, 'params]
 
   def __mixed_in__(base)
     base.set_ivar('routes, [])
     base.using Frankie::App::Routing
   end
 
-  def __bound__(request, response)
-    @('request: request, 'response: response)
+  def __bound__(request, response, params)
+    @('request: request, 'response: response, 'params: params)
   end
 end
 
