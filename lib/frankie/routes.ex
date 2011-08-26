@@ -62,7 +62,7 @@ module Frankie::Routes
     end
 
     def match_route(verb, path)
-      @verb == verb && match_route(@path, path.to_bin.split(~r"/"), {})
+      @verb == verb && match_route(@path, path.to_bin.split(~r"/"), {'splat: []})
     end
 
     def match_route([], [], matched)
@@ -72,6 +72,10 @@ module Frankie::Routes
     def match_route([<<$', key|binary>> | t1], [value|t2], matched)
       key = key.to_atom
       match_route(t1, t2, matched.set(key, value))
+    end
+
+    def match_route(["*" | t1], [value|t2], matched)
+      match_route(t1, t2, matched.update 'splat, _.push(value))
     end
       
     def match_route([h|t1], [h|t2], matched)
