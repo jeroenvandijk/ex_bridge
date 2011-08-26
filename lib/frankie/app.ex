@@ -40,4 +40,9 @@ module Frankie::App
     base.set_ivar('routes, [])
     base.using Frankie::App::Routing
   end
+
+  def __bound__(request, response)
+    @('request: request, 'response: response)
+  end
 end
+

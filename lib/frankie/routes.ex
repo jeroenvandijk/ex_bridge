@@ -8,14 +8,14 @@ module Frankie::Routes
   % object.
   module Wrapper
     def __bound__(app)
-      @('routes: app.routes, 'app: #app())
+      @('routes: app.routes, 'app: app)
     end
 
     def handle_http(request, response)
       verb   = request.request_method
       path   = request.path_chars
       route  = find_route(@routes, verb, path, request)
-      result = route.call(@app, request, response)
+      result = route.call(#(@app)(request, response))
 
       if result.__module_name__ == 'String::Behavior
         result = response.body(result)
