@@ -3,11 +3,11 @@ module Frankie::App
 
     % Add a new route with a verb, path and the callback.
     def verb_route(verb, path, method)
-      % Unfortunately we can pass the method as a reference to the module_eval so 
+      % Unfortunately we cannot pass the method as a reference to the module_eval so 
       % we need to save it in a dictionary, is there another way?
       route_identifier = verb.to_s + path
       update_ivar 'routes, _.set(route_identifier, method)
-      % Also save the method by name so we call the method later on, HAX part 1
+      % Also save the method by name so we can call the method later on, HAX part 1
       set_ivar method.name, method
 
       % TODO instead of just matching on the path we should also incorporate
