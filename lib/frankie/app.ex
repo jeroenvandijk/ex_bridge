@@ -7,18 +7,13 @@ module Frankie::App
       % we need to save it in a dictionary, is there another way?
       route_identifier = verb.to_s + path
       update_ivar 'routes, _.set(route_identifier, method)
-      % Also save the method by name so we can call the method later on, HAX part 1
-      set_ivar method.name, method
 
       % TODO instead of just matching on the path we should also incorporate
       % splats and possible other restrictions
 
       module_eval __FILE__, __LINE__ + 1, ~~METHOD
         def handle_http('#{verb}, "#{path}", request)
-          route = @routes["#{route_identifier}"]
-          % Just calling route.call() doesn't seem to work since it is unbound?
-          % The following does work since we added the method as ivar, HAX part 2
-          send(route.name)
+          @routes["#{route_identifier}"].apply_to(self, [])
         end
 ~~
 
